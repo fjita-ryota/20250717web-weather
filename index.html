@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>天気アプリ</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>天気でわかる！今日はどんな服がぴったり？</h1>
+    </div>
+
+    <div class="selector">
+        <label for="prefecture">地域選択：</label>
+        <select id="prefecture" >
+        <!-- //<option value ="tokyo">東京</option> -->
+        </select>
+    </div>
+    <div class="cards">
+        <div class="card" id="wether-card">
+            <img id="wether-card-image" src="" alt="天気の画像">
+            <p>今日の天気</p>
+            <p id ="wether-card-text">:テキスト</p>
+            <P>気温</P>
+            <p id ="wether-card-text-temp">:テキスト</p>
+        </div>
+
+        <div class="card" id="clothing-card">
+            <img id ="clothing-image" src="" alt="服の画像">
+            <p>今日のお勧めの服装</p>
+            <p id="clothing-card-text">テキスト</p>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
