@@ -1,9 +1,85 @@
 @charset "utf-8";
 
 body {
-    font-family:sans-serif;
-    background-color:#a2c1e8;
-    margin:0;
+  font-family: "Arial", sans-serif;
+  background: #f0f8ff;
+  color: #333;
+  margin: 0;
+  padding: 20px;
+  text-align: center;
+}
+
+.selector {
+  margin: 20px 0;
+}
+
+label {
+  font-size: 18px;
+  margin-right: 10px;
+}
+
+select {
+  font-size: 16px;
+  padding: 5px 10px;
+}
+
+.weather-info {
+  margin-top: 30px;
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  display: inline-block;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.weather-icon,
+.clothing-icon {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+}
+
+.text-block {
+  margin: 15px 0;
+  font-size: 18px;
+}
+
+.cards {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
     padding: 20px;
-    text-align:center;
+}
+
+.card {
+    width: 250px;
+    padding: 16px;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    text-align: center;
+    background-color: #fff;
+}
+
+.card img {
+    width: 100px;
+    height: auto;
+    margin-bottom: 10px;
+}
+
+.card p {
+    font-size: 16px;
+    margin: 8px 0;
+}
+
+h1 {
+    font-size: 24px;
+    text-align: center;
+    margin-top: 20px;
+    color: #333;
+}
+
+.selector {
+    text-align: center;
+    margin: 20px 0;
 }

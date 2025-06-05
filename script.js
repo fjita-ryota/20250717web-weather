@@ -52,54 +52,52 @@ const prefectures = [
 ];
 
 const select = document.getElementById("prefecture");
-prefectures.forEach(pref =>{
+prefectures.forEach(pref => {
     const option = document.createElement("option");
     option.value = pref.value;
     option.textContent = pref.name;
     select.appendChild(option);
 });
-//api
-select.addEventListener("change",async(e) => {
-    const selsected = e.target.value;
-    const pref =prefectures.find(p => p.value === selsected);
-    if(!pref) return;
 
-    const res = await fetch (`https://api.open-meteo.com/v1/forecast?latitude=${pref.lat}&longitude=${pref.lon}&current_weather=true`);
-        const data =await res.json();
-        const weather = data.current_weather;
+select.addEventListener("change", async (e) => {
+    const selected = e.target.value;
+    const pref = prefectures.find(p => p.value === selected);
+    if (!pref) return;
 
-  // 天気コード変換
+    const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${pref.lat}&longitude=${pref.lon}&current_weather=true`);
+    const data = await res.json();
+    const weather = data.current_weather;
 
-  const weatherText = getWeatherText(weather.weathercode);
-  const weatherIcon = getWeatherIcon(weather.weathercode);
+    const weatherText = getWeatherText(weather.weathercode);
+    const weatherIcon = getWeatherIcon(weather.weathercode);
 
-  document.getElementById("wether-text").testContent = `天気：${weatherText}`;
-  document.getElementById("temp-text").textContent = `気温：${weather.temperature}℃`;
-  document.getElementById("icon").src = `images/${weatherIcon}`;
+    // 修正：IDとプロパティ名を正しく
+    document.getElementById("weather-card-text").textContent = `天気：${weatherText}`;
+    document.getElementById("weather-card-text-temp").textContent = `気温：${weather.temperature}℃`;
+    document.getElementById("weather-card-image").src = `images/${weatherIcon}`;
 
-  //服装判定
-  const clothing = getClothingAdvice(weather.temperature);
-  document.getElementById("clothing-text").textContent = clothing.text;
-  document.getElementById("clothing-icon").src = `images/${clothing.image}`;
+    const clothing = getClothingAdvice(weather.temperature);
+    document.getElementById("clothing-card-text").textContent = clothing.text;
+    document.getElementById("clothing-image").src = `images/${clothing.image}`;
 });
 
 function getWeatherText(code) {
     if (code === 0) return "晴れ";
-    if (code<= 3) return "曇り";
+    if (code <= 3) return "曇り";
     if (code <= 67) return "雨";
-    return"不明"
+    return "不明";
 }
- function getWeatherIcon (code) {
-    if(code === 0) return "san.png";
-    if(code <= 3) return "cloud.png";
-    if(code <= 67) return "rain.png";
+
+function getWeatherIcon(code) {
+    if (code === 0) return "sun.png";
+    if (code <= 3) return "cloud.png";
+    if (code <= 67) return "rain.png";
     return "unknown.png";
- }
-
- function getClothingAdvice(temp) {
-  if (temp >= 30) return { text: "半袖がおすすめ！", image: "summer.png" };
-  if (temp >= 20) return { text: "長袖シャツ1枚でOK", image: "spring.png" };
-  if (temp >= 10) return { text: "上着があると安心", image: "autumn.png" };
-  return { text: "コート必須！", image: "winter.png" };
 }
 
+function getClothingAdvice(temp) {
+    if (temp >= 30) return { text: "半袖がおすすめ！", image: "summer.png" };
+    if (temp >= 20) return { text: "長袖シャツ1枚でOK", image: "spring.png" };
+    if (temp >= 10) return { text: "上着があると安心", image: "autumn.png" };
+    return { text: "コート必須！", image: "winter.png" };
+}
