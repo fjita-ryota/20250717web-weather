@@ -1,48 +1,50 @@
 @charset "utf-8";
 
 body {
-  font-family: "Arial", sans-serif;
-  background: #f0f8ff;
-  color: #333;
-  margin: 0;
-  padding: 20px;
-  text-align: center;
+    font-family: "Arial", sans-serif;
+    background: #f0f8ff;
+    color: #333;
+    margin: 0;
+    padding: 20px;
+    text-align: center;
 }
 
 .selector {
-  margin: 20px 0;
+    margin: 20px 0;
 }
 
 label {
-  font-size: 18px;
-  margin-right: 10px;
+    font-size: 18px;
+    margin-right: 10px;
 }
 
 select {
-  font-size: 16px;
-  padding: 5px 10px;
+    font-size: 16px;
+    padding: 5px 10px;
 }
 
-.weather-info {
-  margin-top: 30px;
-  background: #ffffff;
-  padding: 20px;
-  border-radius: 10px;
-  display: inline-block;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+/* 以前の .weather-info や .weather-icon, .clothing-icon のスタイルは .cards クラスの追加で不要になった可能性がありますが、残っていても問題ありません */
+/* .weather-info {
+    margin-top: 30px;
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    display: inline-block;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .weather-icon,
 .clothing-icon {
-  width: 100px;
-  height: 100px;
-  object-fit: contain;
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
 }
 
 .text-block {
-  margin: 15px 0;
-  font-size: 18px;
-}
+    margin: 15px 0;
+    font-size: 18px;
+} */
+
 
 .cards {
     display: flex;
@@ -82,4 +84,86 @@ h1 {
 .selector {
     text-align: center;
     margin: 20px 0;
+}
+
+.hidden {
+    display: none; /* 要素を完全に非表示にする */
+}
+
+#search-button {
+    font-size: 16px;
+    padding: 5px 15px;
+    margin-left: 10px;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #e0e0e0;
+}
+
+#search-button:hover {
+    background-color: #d0d0d0;
+}
+
+/* ここから週間予報セクションのスタイル */
+.weekly-forecast-section { /* 以前の .schedule-section に相当 */
+    margin-top: 40px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    max-width: 800px; /* カードと同じくらいの幅にする */
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center; /* タイトルを中央寄せ */
+}
+
+.weekly-forecast-section h2 {
+    font-size: 20px;
+    color: #333;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+}
+
+#weekly-forecast-container { /* これが週刊予報のカードを格納するコンテナ */
+    display: flex;
+    flex-wrap: wrap; /* 画面幅が狭いときに折り返す */
+    gap: 15px; /* カード間の余白 */
+    justify-content: center; /* カードを中央寄せ */
+}
+
+.daily-forecast-card { /* 各日ごとの予報カード */
+    width: 120px; /* 各日カードの幅 */
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    background-color: #f9f9f9;
+    text-align: center;
+}
+
+.daily-forecast-card p {
+    margin: 5px 0;
+    font-size: 14px;
+}
+
+.daily-forecast-card img {
+    width: 60px; /* アイコンのサイズ */
+    height: auto;
+    margin-bottom: 5px;
+}
+
+.daily-forecast-card .date {
+    font-weight: bold;
+    color: #555;
+}
+
+.daily-forecast-card .temp-range {
+    font-size: 15px;
+    color: #333;
+}
+
+.initial-message { /* 初期メッセージ用 */
+    color: #777;
+    text-align: center;
+    padding: 20px;
 }

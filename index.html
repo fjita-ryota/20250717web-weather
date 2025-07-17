@@ -13,10 +13,11 @@
     <div class="selector">
         <label for="prefecture">地域選択：</label>
         <select id="prefecture"></select>
+        <button id="search-button">検索</button>
     </div>
 
     <div class="cards">
-        <div class="card" id="weather-card">
+        <div class="card hidden" id="weather-card">
             <img id="weather-card-image" src="" alt="天気の画像">
             <p>今日の天気</p>
             <p id="weather-card-text">天気：</p>
@@ -24,13 +25,17 @@
             <p id="weather-card-text-temp">気温：</p>
         </div>
 
-        <div class="card" id="clothing-card">
+        <div class="card hidden" id="clothing-card">
             <img id="clothing-image" src="" alt="服の画像">
             <p>今日のお勧めの服装</p>
             <p id="clothing-card-text">服装：</p>
         </div>
     </div>
 
+    <div class="schedule-section">
+        <h2>週間予報</h2> <div id="weekly-forecast-container"> <p class="initial-message">地域を選択して検索すると、一週間の天気と気温が表示されます。</p>
+        </div>
+    </div>
     <script src="script.js"></script>
 </body>
 </html>
