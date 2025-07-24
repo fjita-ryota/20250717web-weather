@@ -1,56 +1,97 @@
 @charset "utf-8";
 
+/* ==================== 基本設定 ==================== */
 body {
-  font-family: 'Noto Sans JP', sans-serif;
+    font-family: 'Noto Sans JP', sans-serif;
     background: linear-gradient(to bottom right, #e0f2f7, #c1e7f0); /* 淡い水色から青緑へのグラデーション */
     color: #333;
     margin: 0;
     padding: 20px;
     text-align: center;
+    line-height: 1.6; /* 全体の行間を調整 */
 }
 
+h1 {
+    font-size: 2.2em; /* より柔軟な単位に */
+    margin-top: 30px;
+    margin-bottom: 30px;
+    color: #2c3e50;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
+}
+
+/* ==================== セレクター部分 ==================== */
 .selector {
-    margin: 20px 0;
+    margin: 20px auto; /* 中央寄せ */
+    max-width: 500px; /* 適度な最大幅 */
+    display: flex; /* 横並びにするため */
+    justify-content: center; /* 中央寄せ */
+    align-items: center; /* 垂直方向の中央揃え */
+    flex-wrap: wrap; /* 小さい画面で折り返す */
+    gap: 15px; /* 要素間の隙間 */
 }
 
 label {
-    font-size: 18px;
+    font-size: 1.1em;
     margin-right: 10px;
 }
 
-/* セレクトボックスのスタイル */
 select {
-    font-size: 17px;
-    padding: 7px 12px;
+    font-size: 1em;
+    padding: 8px 15px;
     border: 1px solid #ddd;
     border-radius: 8px;
     background-color: #fcfcfc;
-    box-shadow: inset 0 1px 3px rgba(0,0,0,0.06); /* 内側に影 */
-    appearance: none; /* デフォルトの矢印を非表示 (必要ならカスタム矢印を追加) */
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.06);
+    appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
-    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23666%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-25.3%200L146.2%20188.1%2030.5%2069.4a17.6%2017.6%200%200%200-25.3%2023.7L133%20224.7a17.6%2017.6%200%200%200%2025.3%200L287%2093.1a17.6%2017.6%200%200%200%200-23.7z%22%2F%3E%3C%2Fsvg%3E'); /* カスタム矢印 */
+    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23666%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-25.3%200L146.2%20188.1%2030.5%2069.4a17.6%2017.6%200%200%200-25.3%2023.7L133%20224.7a17.6%2017.6%200%200%200%2025.3%200L287%2093.1a17.6%2017.6%200%200%200%200-23.7z%22%2F%3E%3C%2Fsvg%3E');
     background-repeat: no-repeat;
     background-position: right 10px center;
     background-size: 12px;
-    padding-right: 30px; /* 矢印分のスペース */
+    padding-right: 30px;
+    cursor: pointer;
 }
 
+#search-button {
+    font-size: 1.05em;
+    padding: 8px 22px;
+    margin-left: 15px;
+    cursor: pointer;
+    border: none;
+    border-radius: 8px;
+    background-color: #4CAF50;
+    color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+#search-button:hover {
+    background-color: #45a049;
+    transform: translateY(-2px);
+}
+
+/* ==================== メインカード群 ==================== */
 .cards {
     display: flex;
     justify-content: center;
-    gap: 2.5rem;
-    flex-wrap: wrap;
+    gap: 2.5rem; /* カード間の間隔 */
+    flex-wrap: wrap; /* 小さい画面で折り返す */
     padding: 20px;
 }
 
 .card {
-    width: 250px;
-    padding: 16px;
+    width: 280px; /* カード幅を少し広げ、情報をゆったり表示 */
+    padding: 20px;
     border-radius: 12px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    box-shadow: 0 0 15px rgba(0,0,0,0.15); /* 影を強調 */
     text-align: center;
     background-color: #fff;
+    display: flex; /* Flexboxで内部要素を配置 */
+    flex-direction: column; /* 縦並び */
+    align-items: center; /* 中央揃え */
+    justify-content: space-between; /* 要素間のスペースを均等に */
+    min-height: 250px; /* 最低の高さを設定して、カードの高さを揃える補助に */
 }
 
 .card img {
@@ -60,157 +101,200 @@ select {
 }
 
 .card p {
-    font-size: 16px;
+    font-size: 1.1em;
     margin: 8px 0;
+    color: #444;
 }
 
-h1 {
-    font-size: 32px; /* 少し大きく */
-    margin-top: 30px; /* 上余白 */
-    margin-bottom: 30px; /* 下余白 */
-    color: #2c3e50; /* 濃い目の色 */
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.05); /* 少し影 */
-}
-
-.selector {
-    text-align: center;
-    margin: 20px 0;
+/* 今日の天気カードの特定の調整 */
+#weather-card-text-temp {
+    /* ここが改行されない問題への解決策 */
+    white-space: normal !important; /* 強制的にテキストの折り返しを許可 */
+    word-break: normal !important; /* 単語の途中での改行も許可 */
+    display: block; /* pタグはデフォルトでblockですが、念のため明示 */
+    font-size: 1.2em; /* 気温を少し大きく */
+    font-weight: bold;
+    color: #2c3e50;
+    margin-top: 10px; /* 上部のマージンを調整 */
 }
 
 .hidden {
-    display: none; 
+    display: none;
 }
 
-#search-button {
-    font-size: 17px;
-    padding: 8px 20px;
-    margin-left: 15px;
-    cursor: pointer;
-      border: none; 
-    border-radius: 8px; /* 角丸 */
-    background-color: #4CAF50; /* 緑系の色 */
-    color: white; /* 文字色を白に */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 影を追加 */
-   
-}
-
-#search-button:hover {
-    background-color: #45a049; 
-    transform: translateY(-2px); 
-}
-
-/* ここから週間予報セクションのスタイル */
-.weekly-forecast-section { 
-    margin-top: 40px;
-    padding: 20px;
+/* ==================== 週間予報セクション ==================== */
+.weekly-forecast-section {
+    margin-top: 50px; /* 上部のマージンを増やす */
+    padding: 30px;
     background-color: #fff;
-    border-radius: 12px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    max-width: 800px; 
+    border-radius: 15px; /* 角丸を大きく */
+    box-shadow: 0 0 15px rgba(0,0,0,0.15);
+    max-width: 960px; /* さらに幅を広げ、より多くのカードを表示 */
     margin-left: auto;
     margin-right: auto;
-    text-align: center; 
-}
-
-.weekly-forecast-section h2 {
-    font-size: 20px;
-    color: #333;
-    margin-bottom: 20px;
-    border-bottom: 2px solid #eee;
-    padding-bottom: 10px;
-}
-
-#weekly-forecast-container { /* これが週刊予報のカードを格納するコンテナ */
-    display: flex;
-    flex-wrap: wrap; /* 画面幅が狭いときに折り返す */
-    gap: 15px; /* カード間の余白 */
-    justify-content: center; /* カードを中央寄せ */
-}
-
-.daily-forecast-card { /* 各日ごとの予報カード */
-    width: 120px; 
-    padding: 10px;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    background-color: #f9f9f9;
     text-align: center;
 }
 
+.weekly-forecast-section h2 {
+    font-size: 1.8em;
+    color: #333;
+    margin-bottom: 25px;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 15px;
+}
+
+#weekly-forecast-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px; /* カード間の間隔を少し広げる */
+    justify-content: center;
+    align-items: stretch; /* すべてのカードの高さを揃える */
+    padding: 10px 0;
+}
+
 .daily-forecast-card {
-    width: 130px; /* 少し幅を広げる */
-    padding: 12px;
-    border-radius: 10px; /* 角丸を大きく */
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08); /* 影を調整 */
-    background-color: #fefefe; /* 少し白に近い背景 */
-    transition: transform 0.2s ease-in-out;
-    
-    /* ここを修正・追加 */
-    display: flex; /* flexboxを有効にする */
-    flex-direction: column; /* 子要素を縦に並べる */
-    align-items: center; /* 子要素を水平方向の中央に配置 */
-    /* ここまで修正・追加 */
+    width: 150px; /* カード幅を調整 */
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1); /* 影を強調 */
+    background-color: #fefefe;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    cursor: pointer;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between; /* 上下均等に配置 */
+    text-align: center;
+    min-height: 220px; /* 週刊カードの最低高さを設定 */
 }
 
 .daily-forecast-card:hover {
-    transform: translateY(-3px);
+    transform: translateY(-5px); /* ホバー時の動きを強調 */
+    box-shadow: 0 6px 15px rgba(0,0,0,0.2);
 }
 
 .daily-forecast-card p {
     margin: 5px 0;
-    font-size: 14px;
-    text-align: center; /* テキストも中央揃えに念のため追加 */
+    font-size: 0.95em;
+    line-height: 1.4;
+}
+
+.daily-forecast-card .date {
+    font-weight: bold;
+    color: #555;
+    margin-bottom: 8px;
+    font-size: 1em;
+}
+
+.daily-forecast-card .temp-range {
+    font-size: 1.05em;
+    font-weight: bold;
+    color: #333;
+    margin-top: 8px;
 }
 
 .daily-forecast-card img {
-    width: 60px; /* アイコンのサイズ */
+    width: 65px; /* アイコンサイズを少し大きく */
     height: auto;
-    margin-bottom: 5px;
-    /* block要素にして、margin: auto で中央寄せも可能ですが、flexboxが簡潔です */
-}
-
-/* 服装アイコンも中央にしたい場合 */
-.clothing-icon-weekly {
-    width: 50px;
-    height: auto;
-    margin-bottom: 5px;
-    /* display: block; */ /* 必要であればブロック要素にして */
-    /* margin: 0 auto; */ /* マージンで中央寄せ */
-}
-
-/* clothing-text-weekly も中央に */
-.clothing-text-weekly {
-    font-size: 13px;
-    color: #666;
-    text-align: center; /* テキストを中央揃え */
-}
-.initial-message { /* 初期メッセージ用 */
-    color: #777;
-    text-align: center;
-    padding: 20px;
+    margin-bottom: 8px;
 }
 
 .clothing-advice-weekly {
-    margin-top: 10px;
-    padding-top: 8px;
-    border-top: 1px dashed #eee; /* 上部に点線ボーダーを追加して区切る */
+    margin-top: 15px; /* 上部のマージンを増やす */
+    padding-top: 10px;
+    border-top: 1px dashed #e0e0e0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .clothing-icon-weekly {
-    width: 50px; /* 週間の服装アイコンのサイズ */
+    width: 48px;
     height: auto;
     margin-bottom: 5px;
 }
 
 .clothing-text-weekly {
-    font-size: 13px; /* 週間の服装テキストのサイズ */
+    font-size: 0.85em;
     color: #666;
+    line-height: 1.3;
 }
 
-/* 既存の .daily-forecast-card のスタイルも微調整すると良いでしょう */
-.daily-forecast-card {
-    /* ... 既存のスタイル ... */
-    height: auto; /* 高さを自動調整 */
-    display: flex;
-    flex-direction: column; /* 要素を縦に並べる */
-    justify-content: space-between; /* 上下均等に配置 */
+/* ==================== メッセージ ==================== */
+.initial-message, .no-data {
+    color: #777;
+    text-align: center;
+    padding: 30px 20px;
+    font-size: 1.1em;
+    background-color: #f8f8f8;
+    border-radius: 8px;
+    margin: 20px auto; /* 中央寄せ */
+    max-width: 600px; /* 適度な最大幅 */
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.no-data {
+    color: #d9534f;
+    font-weight: bold;
+}
+
+/* ==================== レスポンシブ対応 ==================== */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 1.8em;
+    }
+    .selector {
+        flex-direction: column; /* 縦並び */
+        gap: 10px;
+    }
+    label, select, #search-button {
+        width: 100%; /* 全幅にする */
+        margin-left: 0; /* マージンをリセット */
+    }
+    #search-button {
+        margin-top: 10px; /* ボタンとセレクトボックスの間に隙間 */
+    }
+    .cards {
+        gap: 1.5rem;
+    }
+    .card {
+        width: 90%; /* 小さい画面ではカード幅を調整 */
+        max-width: 300px; /* 最大幅を設定 */
+    }
+    .weekly-forecast-section {
+        padding: 20px;
+    }
+    #weekly-forecast-container {
+        gap: 10px;
+    }
+    .daily-forecast-card {
+        width: 45%; /* 2列表示 */
+        max-width: 160px; /* 最大幅 */
+        min-height: 200px;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 10px;
+    }
+    h1 {
+        font-size: 1.5em;
+    }
+    .selector {
+        padding: 0 10px;
+    }
+    .card {
+        width: 100%; /* 1列表示 */
+    }
+    .daily-forecast-card {
+        width: 80%; /* 1列表示 */
+        max-width: 200px;
+    }
+    .initial-message, .no-data {
+        padding: 20px 10px;
+        font-size: 1em;
+    }
 }

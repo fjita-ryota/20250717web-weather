@@ -48,114 +48,26 @@ const prefectures = [
     { name: "沖縄県", value: "okinawa", lat: 26.2125, lon: 127.68111 },
 ];
 
-const select = document.getElementById("prefecture");
+// DOM要素の取得
+const selectElement = document.getElementById("prefecture");
 const searchButton = document.getElementById("search-button");
 const weatherCard = document.getElementById("weather-card");
 const clothingCard = document.getElementById("clothing-card");
-const weeklyForecastContainer = document.getElementById("weekly-forecast-container"); // 追加
+const weeklyForecastContainer = document.getElementById("weekly-forecast-container");
 
 // 都道府県のドロップダウンメニューを生成
 prefectures.forEach(pref => {
     const option = document.createElement("option");
     option.value = pref.value;
     option.textContent = pref.name;
-    select.appendChild(option);
+    selectElement.appendChild(option);
 });
 
 /**
- * 今日から一週間の天気と気温を表示する関数
- * @param {Array} dailyData - Open-Meteo APIから取得した日ごとの天気データ
+ * Open-Meteoの天気コードから天気テキストを取得
+ * @param {number} code - 天気コード
+ * @returns {string} 天気テキスト
  */
-function displayWeeklyForecast(dailyData) {
-    weeklyForecastContainer.innerHTML = ''; // コンテンツをクリア
-
-    if (!dailyData || dailyData.time.length === 0) {
-        weeklyForecastContainer.innerHTML = '<p class="no-data">週間予報が取得できませんでした。</p>';
-        return;
-    }
-
-    // 取得したデータの日付、最高気温、最低気温、天気コードを取得
-    const dates = dailyData.time;
-    const maxTemps = dailyData.temperature_2m_max;
-    const minTemps = dailyData.temperature_2m_min;
-    const weatherCodes = dailyData.weathercode;
-
-    for (let i = 0; i < dates.length; i++) {
-        const date = new Date(dates[i]);
-        // 日付と曜日のフォーマット
-        const dayOfWeek = ['日', '月', '火', '水', '木', '金', '土'][date.getDay()];
-        const formattedDate = `${date.getMonth() + 1}/${date.getDate()}(${dayOfWeek})`;
-
-        const weatherText = getWeatherText(weatherCodes[i]);
-        const weatherIcon = getWeatherIcon(weatherCodes[i]);
-        const maxTemp = maxTemps[i];
-        const minTemp = minTemps[i];
-
-        const card = document.createElement('div');
-        card.classList.add('daily-forecast-card');
-
-        card.innerHTML = `
-            <p class="date">${formattedDate}</p>
-            <img src="images/${weatherIcon}" alt="${weatherText}">
-            <p>${weatherText}</p>
-            <p class="temp-range">${minTemp}°C / ${maxTemp}°C</p>
-        `;
-        weeklyForecastContainer.appendChild(card);
-    }
-}
-
-
-// 天気情報を取得して表示する関数
-async function fetchWeatherAndClothing() {
-    const selected = select.value;
-    const pref = prefectures.find(p => p.value === selected);
-    if (!pref) return;
-
-    const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${pref.lat}&longitude=${pref.lon}&current_weather=true&daily=weathercode,temperature_2m_max,temperature_2m_min&timezone=Asia/Tokyo`);
-    const data = await res.json();
-    const weather = data.current_weather; // 今日の天気
-    const dailyForecast = data.daily; // 週間予報データ
-
-    // 今日の天気カードの更新
-    const weatherText = getWeatherText(weather.weathercode);
-    const weatherIcon = getWeatherIcon(weather.weathercode);
-
-    // 今日の現在の気温
-    const currentTemp = weather.temperature; // これが現在の気温です
-
-    // 今日の最高気温と最低気温
-    const todayMaxTemp = dailyForecast.temperature_2m_max[0];
-    const todayMinTemp = dailyForecast.temperature_2m_min[0];
-document.getElementById("weather-card-text").textContent = `天気：${weatherText}`;
-    // ここを修正：現在の気温、最低気温、最高気温をすべて表示
-    document.getElementById("weather-card-text-temp").textContent = `気温：${currentTemp}°C 
-    (${todayMinTemp}°C / ${
- todayMaxTemp}°C)`; 
-    document.getElementById("weather-card-image").src = `images/${weatherIcon}`;
-
-
-    // 服装アドバイスカードの更新
-    const clothing = getClothingAdvice(weather.temperature);
-    document.getElementById("clothing-card-text").textContent = clothing.text;
-    document.getElementById("clothing-image").src = `images/${clothing.image}`;
-
-    // カードを表示する
-    weatherCard.classList.remove("hidden");
-    clothingCard.classList.remove("hidden");
-
-    // 週間予報の表示
-    displayWeeklyForecast(dailyForecast); // 週間予報データを渡して表示関数を呼び出す
-}
-
-// 検索ボタンがクリックされたときにfetchWeatherAndClothing関数を実行
-searchButton.addEventListener("click", fetchWeatherAndClothing);
-
-// ページ読み込み時に初期メッセージを表示しておく
-document.addEventListener('DOMContentLoaded', () => {
-    weeklyForecastContainer.innerHTML = '<p class="initial-message">地域を選択して検索すると、一週間の天気と気温が表示されます。</p>';
-});
-
-
 function getWeatherText(code) {
     if (code === 0) return "快晴";
     if (code === 1) return "晴れ (一部曇り)";
@@ -167,14 +79,19 @@ function getWeatherText(code) {
     if (code >= 61 && code <= 65) return "雨";
     if (code >= 66 && code <= 67) return "着氷性の雨";
     if (code >= 71 && code <= 75) return "雪";
-    if (code >= 77 && code <= 77) return "雪の粒";
+    if (code === 77) return "雪の粒";
     if (code >= 80 && code <= 82) return "にわか雨";
     if (code >= 85 && code <= 86) return "にわか雪";
-    if (code >= 95 && code <= 96) return "雷雨";
+    if (code === 95 || code === 96) return "雷雨";
     if (code === 99) return "雷雨とひょう";
     return "不明";
 }
 
+/**
+ * Open-Meteoの天気コードから天気アイコンのファイル名を取得
+ * @param {number} code - 天気コード
+ * @returns {string} アイコンファイル名
+ */
 function getWeatherIcon(code) {
     if (code === 0) return "sun.png";
     if (code === 1 || code === 2) return "partly_cloudy.png";
@@ -189,27 +106,36 @@ function getWeatherIcon(code) {
     return "unknown.png";
 }
 
+/**
+ * 気温に応じた服装アドバイスを取得
+ * @param {number} temp - 気温
+ * @returns {{text: string, image: string}} 服装アドバイスのテキストと画像パス
+ */
 function getClothingAdvice(temp) {
     if (temp >= 30) return { text: "半袖がおすすめ！", image: "clothes_T-shirt.png" };
+    if (temp >= 25) return { text: "半袖シャツで快適", image: "clothes_T-shirt.png" }; // 25-29度を追加
     if (temp >= 20) return { text: "長袖シャツ1枚でOK", image: "clothes_long_sleeve_shirt.png" };
+    if (temp >= 15) return { text: "薄手の羽織もの", image: "clothes_cardigan.jpg" }; // 15-19度を追加
     if (temp >= 10) return { text: "上着があると安心 (カーディガンなど)", image: "clothes_cardigan.jpg" };
-    if (temp >= 0) return { text: "セーターや厚手のジャケットを！", image: "clothes_sweater.jpg" };
+    if (temp >= 5) return { text: "セーターやジャケット", image: "clothes_sweater.jpg" }; // 5-9度を追加
+    if (temp >= 0) return { text: "厚手のセーターやコート", image: "clothes_coat.jpg" }; // コート画像に修正
     return { text: "コートやダウン必須！", image: "clothes_down_jacket.jpg" };
 }
 
+
 /**
  * 今日から一週間の天気と気温、服装を表示する関数
- * @param {Array} dailyData
+ * @param {object} dailyData - Open-Meteo APIから取得した日ごとの天気データ
  */
 function displayWeeklyForecast(dailyData) {
-    weeklyForecastContainer.innerHTML = ''; // コンテンツをクリア
+    // コンテンツをクリアし、初期メッセージを削除
+    weeklyForecastContainer.innerHTML = '';
 
     if (!dailyData || dailyData.time.length === 0) {
         weeklyForecastContainer.innerHTML = '<p class="no-data">週間予報が取得できませんでした。</p>';
         return;
     }
 
-    // 取得したデータの日付、最高気温、最低気温、天気コードを取得
     const dates = dailyData.time;
     const maxTemps = dailyData.temperature_2m_max;
     const minTemps = dailyData.temperature_2m_min;
@@ -217,7 +143,6 @@ function displayWeeklyForecast(dailyData) {
 
     for (let i = 0; i < dates.length; i++) {
         const date = new Date(dates[i]);
-        // 日付と曜日のフォーマット
         const dayOfWeek = ['日', '月', '火', '水', '木', '金', '土'][date.getDay()];
         const formattedDate = `${date.getMonth() + 1}/${date.getDate()}(${dayOfWeek})`;
 
@@ -227,7 +152,7 @@ function displayWeeklyForecast(dailyData) {
         const minTemp = minTemps[i];
 
         // その日の最高気温に基づいて服装アドバイスを取得
-        const clothingAdvice = getClothingAdvice(maxTemp); // ここで最高気温を使用
+        const clothingAdvice = getClothingAdvice(maxTemp);
 
         const card = document.createElement('div');
         card.classList.add('daily-forecast-card');
@@ -237,7 +162,7 @@ function displayWeeklyForecast(dailyData) {
             <img src="images/${weatherIcon}" alt="${weatherText}">
             <p>${weatherText}</p>
             <p class="temp-range">${minTemp}°C / ${maxTemp}°C</p>
-            <div class="clothing-advice-weekly"> 
+            <div class="clothing-advice-weekly">
                 <img src="images/${clothingAdvice.image}" alt="${clothingAdvice.text}" class="clothing-icon-weekly">
                 <p class="clothing-text-weekly">${clothingAdvice.text}</p>
             </div>
@@ -245,3 +170,80 @@ function displayWeeklyForecast(dailyData) {
         weeklyForecastContainer.appendChild(card);
     }
 }
+
+
+/**
+ * 天気情報を取得して表示するメイン関数
+ */
+async function fetchWeatherAndClothing() {
+    const selectedValue = selectElement.value;
+    const pref = prefectures.find(p => p.value === selectedValue);
+
+    if (!pref) {
+        console.error("Selected prefecture not found.");
+        // エラーメッセージを表示するなどの処理を追加しても良い
+        return;
+    }
+
+    try {
+        // APIリクエストのURLを構築
+        const apiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${pref.lat}&longitude=${pref.lon}&current_weather=true&daily=weathercode,temperature_2m_max,temperature_2m_min&timezone=Asia/Tokyo`;
+        const res = await fetch(apiUrl);
+
+        if (!res.ok) { // HTTPステータスが200番台以外の場合
+            throw new Error(`HTTP error! status: ${res.status}`);
+        }
+
+        const data = await res.json();
+
+        // 今日の天気情報
+        const weather = data.current_weather;
+        // 週間予報データ
+        const dailyForecast = data.daily;
+
+        // 今日の天気カードの更新
+        const weatherText = getWeatherText(weather.weathercode);
+        const weatherIcon = getWeatherIcon(weather.weathercode);
+        const currentTemp = weather.temperature;
+        const todayMaxTemp = dailyForecast.temperature_2m_max[0];
+        const todayMinTemp = dailyForecast.temperature_2m_min[0];
+
+        document.getElementById("weather-card-image").src = `images/${weatherIcon}`;
+        document.getElementById("weather-card-text").textContent = `天気：${weatherText}`;
+        // ここでinnerHTMLと<br>を使用して改行を挿入
+        document.getElementById("weather-card-text-temp").innerHTML = `気温：${currentTemp}°C<br>(${todayMinTemp}°C / ${todayMaxTemp}°C)`;
+
+        // 服装アドバイスカードの更新
+        const clothing = getClothingAdvice(currentTemp); // 現在の気温でアドバイス
+        document.getElementById("clothing-image").src = `images/${clothing.image}`;
+        document.getElementById("clothing-card-text").textContent = clothing.text;
+
+        // カードを表示
+        weatherCard.classList.remove("hidden");
+        clothingCard.classList.remove("hidden");
+
+        // 週間予報の表示
+        displayWeeklyForecast(dailyForecast);
+
+    } catch (error) {
+        console.error("天気情報の取得中にエラーが発生しました:", error);
+        // ユーザーにエラーを通知
+        alert("天気情報の取得に失敗しました。地域を再選択してお試しください。");
+        // カードを非表示にするか、エラーメッセージを表示
+        weatherCard.classList.add("hidden");
+        clothingCard.classList.add("hidden");
+        weeklyForecastContainer.innerHTML = '<p class="no-data">天気情報の取得中にエラーが発生しました。</p>';
+    }
+}
+
+// イベントリスナー
+document.addEventListener('DOMContentLoaded', () => {
+    // 初期メッセージの表示
+    weeklyForecastContainer.innerHTML = '<p class="initial-message">地域を選択して検索すると、一週間の天気と気温が表示されます。</p>';
+
+    // 検索ボタンにイベントリスナーを設定
+    searchButton.addEventListener("click", fetchWeatherAndClothing);
+
+    // （オプション）セレクトボックスの変更時にも自動で検索を行う場合
+    // selectElement.addEventListener("change", fetchWeatherAndClothing);
+});
